@@ -1,14 +1,11 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
-import { Output } from "@pulumi/pulumi";
 
 import * as fs from "fs";
 import * as mime from "mime";
 import * as path from "path";
 
 const tenMinutes = 60 * 10;
-
-// TODO: Refactor this into a separate file and see if we can make the files more robust.
 
 // crawlDirectory recursive crawls the provided directory, applying the provided function
 // to every file it contains. Doesn't handle cycles from symlinks.
@@ -71,6 +68,9 @@ function createAliasRecord(
         opts);
 }
 
+/**
+ * Arguments to StaticWebsite concerning the website's contents.
+ */
 export interface ContentArgs {
     /**
      * Path to the content files to serve relative to the CWD of the Pulumi program.
@@ -84,6 +84,9 @@ export interface ContentArgs {
     custom404Path?: string;
 }
 
+/**
+ * Arguments to StaticWebsite optionally specifying how a domain should be attached.
+ */
 export interface DomainArgs {
     // targetDomain is Route53 hosted domain to create the domain on. If it is
     // a subdomain, ("www.example.com"), the A record "www" will be created. If
