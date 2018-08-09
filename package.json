@@ -1,6 +1,6 @@
 {
   "name": "static-website-aws",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Pulumi package for hosting a static website on AWS.",
   "repository": {
     "type": "git",

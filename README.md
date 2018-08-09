@@ -32,7 +32,7 @@ The `StaticWebsite` resource takes two arguments for configuration, `ContentArgs
 
 `DomainArgs` is optional set of arguments to create a `Route53` domain record to serve the website. If you want to serve the website over a custom domain or serve it using HTTPS, you should specify `DomainArgs`.
 
-- `targetDomain` - the domain to serve the website on, e.g. "example.com" or "www.example.com". A DNS `A` record will be created to point the target domain to the CloudFront distribution. If set, a `Route53` hosed zone for the root domain must already exist. (e.g. "example.com" must already be managed by Route53 in the same AWS account you are running the Pulumi program in.)
+- `targetDomain` - the domain to serve the website on, e.g. "example.com" or "www.example.com". A DNS `CNAME` record will be created to point the target domain to the CloudFront distribution. If set, a `Route53` hosed zone for the root domain must already exist. (e.g. "example.com" must already be managed by Route53 in the same AWS account you are running the Pulumi program in.)
 - `acmCertificateArn` - The ARN of the Amazon Certificate Manager cert to use for HTTPS traffic to the CloudFront distribution. Must be in the `us-east-1` region and support `targetDomain`.
 
 ## Building

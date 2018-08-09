@@ -45,7 +45,7 @@ function getDomainAndSubdomain(domain: string): { subdomain: string, parentDomai
 }
 
 // Creates a new Route53 DNS record pointing the domain to the CloudFront distribution.
-function createAliasRecord(
+function createCnameRecord(
         targetDomain: string,
         distribution: aws.cloudfront.Distribution,
         opts: pulumi.ResourceOptions): aws.route53.Record {
@@ -56,7 +56,7 @@ function createAliasRecord(
         {
             name: domainParts.subdomain,
             zoneId: hostedZoneId,
-            type: "A",
+            type: "CNAME",
             aliases: [
                 {
                     name: distribution.domainName,
@@ -118,9 +118,9 @@ export class StaticWebsite extends pulumi.ComponentResource {
     // by caching content in edge nodes across the world.
     readonly cdn: aws.cloudfront.Distribution;
 
-    // aRecord is the ALIAS record created on the target domain which
+    // cnameRecord is the CNAME record created on the target domain which
     // points to the CDN. If DomainArgs is not specified, will be null.
-    readonly aRecord?: aws.route53.Record;
+    readonly cnameRecord?: aws.route53.Record;
 
     /**
      * Creates a new static website hosted on AWS.
@@ -286,10 +286,10 @@ export class StaticWebsite extends pulumi.ComponentResource {
         };
         this.cdn = new aws.cloudfront.Distribution(`${name}-cdn`, distributionArgs, defaultResourceOptions);
 
-        // Create/Update DNS record if desired
-        this.aRecord = undefined;
+        // Create/Update DNS record if desired.
+        this.cnameRecord = undefined;
         if (domainArgs) {
-            this.aRecord = createAliasRecord(domainArgs.targetDomain, this.cdn, defaultResourceOptions);
+            this.cnameRecord = createCnameRecord(domainArgs.targetDomain, this.cdn, defaultResourceOptions);
         }
      }
 }
